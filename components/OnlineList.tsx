@@ -10,7 +10,8 @@ const Container = styled.ul`
   align-items: center;
   list-style: none;
   padding-left: 0;
-  width: 50%;
+  width: 90%;
+  max-width: 600px;
   margin: 10vh auto;
 `;
 
