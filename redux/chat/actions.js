@@ -10,3 +10,8 @@ export const initChat = params => ({
   type: chatActions.initChat,
   payload: { ...params },
 });
+
+export const toggle = params => ({
+  type: chatActions.toggle,
+  payload: { ...params },
+});

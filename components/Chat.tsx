@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
 import uuid4 from 'uuid'
+import { connect } from 'react-redux';
+import { toggle, sendMessage } from '../redux/rootActions';
 
 const Container = styled.div`
   width: 100%;
@@ -14,13 +16,10 @@ const Container = styled.div`
 const Messages = styled.ol`
   list-style: none;
   padding-left: 0;
-  overflow: scroll;
-  height: 25vh;
   padding: 0.25rem;
   margin: 0;
-  background-color: azure;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 
   li {
     padding: 0.5rem 0.25rem;
@@ -30,6 +29,14 @@ const Messages = styled.ol`
       background-color: #00ffff2e;
     }
   }
+`;
+
+const Window = styled.div`
+  overflow: scroll;
+  height: 25vh;
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: azure;
 `;
 
 const Bar = styled.div`
@@ -61,32 +68,41 @@ const Input = styled.input`
 interface Chat {
   name: string;
   show: boolean;
-  toggleChat(index: any): void;
+  dispatchToggle: any;
+  dispatchSendMessage: any;
+  messages: [];
 }
 
-const Chat = ({ name, show, toggleChat }: Chat) => {
-  if (!show) return null;
-
+const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Chat) => {
   const [input, changeInputValue] = useState("");
-  const [messages, changeMessages] = useState([]);
+  const [localMessages, changeMessages] = useState([]);
+
+  useEffect(() => {
+    changeMessages(messages);
+  }, [messages]);
+
+  if (!show) return null;
 
   const submitHandler = (e) => {
     e.preventDefault();
-    changeMessages([input, ...messages]);
+    changeMessages([input, ...localMessages]);
     changeInputValue("");
+    dispatchSendMessage({ name, message: input })
   };
 
   return (
     <Container>
-      <Bar onClick={toggleChat}>
+      <Bar onClick={() => dispatchToggle({ name })}>
         <h4>{name}</h4>
         <FAIcon icon={faTimes} />
       </Bar>
-      <Messages>
-        {messages.map(el => (
-          <li key={uuid4()}>{el}</li>
-        ))}
-      </Messages>
+      <Window>
+        <Messages>
+          {localMessages.map(el => (
+            <li key={uuid4()}>{el}</li>
+          ))}
+        </Messages>
+      </Window>
       <form onSubmit={(e) => submitHandler(e)}>
         <Input type="text" value={input} onChange={e => changeInputValue(e.target.value)} />
       </form>
@@ -94,4 +110,13 @@ const Chat = ({ name, show, toggleChat }: Chat) => {
   );
 };
 
-export default Chat;
+const mapDispatchToProps = dispatch => ({
+  dispatchToggle: (params) => dispatch(toggle(params)),
+  dispatchSendMessage: (params) => dispatch(sendMessage(params)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Chat);
+

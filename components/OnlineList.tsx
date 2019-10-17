@@ -4,7 +4,7 @@ import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon as FAIcon } from "@fortawesome/react-fontawesome";
 import uuid4 from 'uuid'
 import { connect } from 'react-redux';
-import { initChat } from '../redux/rootActions';
+import { initChat, toggle } from '../redux/rootActions';
 
 const Container = styled.ul`
   display: grid;
@@ -39,16 +39,18 @@ const Person = styled.li`
   }
 `;
 
-const Online = ({ list, toggleChat, dispatchInitChat }: { list: any, toggleChat(index: any): void, dispatchInitChat: any}) => {
-  const clickHandler = (person: any, index: number) => {
+const list = [{ name: 'Adrian', show: false, init: false }, { name: 'Adam', show: false, init: false }, { name: 'Darek', show: false, init: false }];
+
+const Online = ({ dispatchInitChat, dispatchToggle }: { dispatchInitChat: any, dispatchToggle: any }) => {
+  const clickHandler = (person: any) => {
     dispatchInitChat(person);
-    toggleChat(index);
+    dispatchToggle(person);
   };
 
   return (
     <Container>
-      {list.map((person: any, index) => (
-        <Person key={uuid4()} onClick={() => clickHandler(person, index)}>
+      {list.map((person: any) => (
+        <Person key={uuid4()} onClick={() => clickHandler(person)}>
           <FAIcon icon={faUserTie} />
           {person.name}
         </Person>
@@ -58,6 +60,7 @@ const Online = ({ list, toggleChat, dispatchInitChat }: { list: any, toggleChat(
 };
 
 const mapDispatchToProps = dispatch => ({
+  dispatchToggle: (params) => dispatch(toggle(params)),
   dispatchInitChat: (params) => dispatch(initChat(params)),
 });
 
