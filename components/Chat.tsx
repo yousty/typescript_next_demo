@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
-import uuid4 from 'uuid'
+import uuid4 from 'uuid';
 import { connect } from 'react-redux';
 import { toggle, sendMessage } from '../redux/rootActions';
 import { ChatInterface } from '../redux/interfaces';
@@ -66,25 +66,31 @@ const Input = styled.input`
   }
 `;
 
-const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: ChatInterface) => {
-  const [input, changeInputValue] = useState("");
+const Chat: React.FunctionComponent<ChatInterface> = ({
+  name,
+  show,
+  messages,
+  dispatchToggle,
+  dispatchSendMessage,
+}: ChatInterface) => {
+  const [input, changeInputValue] = useState('');
   const [localMessages, changeMessages] = useState([]);
 
   useEffect(() => {
     changeMessages(messages);
   }, [messages]);
 
-  const handleInputChange = (val: string) => {
+  const handleInputChange = (val: string): void => {
     changeInputValue(val);
-  }
+  };
 
   if (!show) return null;
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     changeMessages([input, ...localMessages]);
-    changeInputValue("");
-    dispatchSendMessage({ name, message: input })
+    changeInputValue('');
+    dispatchSendMessage({ name, message: input });
   };
 
   return (
@@ -95,25 +101,28 @@ const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Cha
       </Bar>
       <Window>
         <Messages>
-          {localMessages.map(el => (
+          {localMessages.map((el: string) => (
             <li key={uuid4()}>{el}</li>
           ))}
         </Messages>
       </Window>
-      <form onSubmit={(e) => submitHandler(e)}>
-        <Input type="text" value={input} onChange={e => handleInputChange(e.target.value)} />
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>): void => submitHandler(e)}>
+        <Input
+          type="text"
+          value={input}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleInputChange(e.target.value)}
+        />
       </form>
     </Container>
   );
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatchToggle: (params: {}) => dispatch(toggle(params)),
-  dispatchSendMessage: (params: {}) => dispatch(sendMessage(params)),
+  dispatchToggle: params => dispatch(toggle(params)),
+  dispatchSendMessage: params => dispatch(sendMessage(params)),
 });
 
 export default connect(
   null,
   mapDispatchToProps,
 )(Chat);
-
