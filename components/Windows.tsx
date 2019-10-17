@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Windows = ({ chats }) => {
+const Windows = ({ chats }: { chats: [] }) => {
   const [localChats, changeChats] = useState([]);
   useEffect(() => {
     changeChats(chats);

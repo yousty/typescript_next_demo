@@ -1,14 +1,10 @@
 import { chatActions } from '../rootTypes';
 import { replaceArrayItem } from '../helpers';
+import { ChatInterface } from '../interfaces';
 
 export const INITIAL_STATE = {
   chats: [],
 };
-
-interface Chat {
-  name: string;
-  message: string;
-}
 
 const chatState = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -31,7 +27,7 @@ const chatState = (state = INITIAL_STATE, action) => {
       const {
         name,
         message,
-      }: Chat = action.payload;
+      }: ChatInterface = action.payload;
       const foundChatIndex = state.chats.findIndex(chat => chat.name === name);
       const newChat = {
         ...state.chats[foundChatIndex],
@@ -48,7 +44,7 @@ const chatState = (state = INITIAL_STATE, action) => {
       };
     }
     case chatActions.toggle: {
-      const { name }: Chat = action.payload;
+      const { name }: ChatInterface = action.payload;
       const foundChatIndex = state.chats.findIndex(chat => chat.name === name);
       const newChat = { ...state.chats[foundChatIndex], show: !state.chats[foundChatIndex].show };
 

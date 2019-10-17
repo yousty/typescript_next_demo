@@ -5,6 +5,7 @@ import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
 import uuid4 from 'uuid'
 import { connect } from 'react-redux';
 import { toggle, sendMessage } from '../redux/rootActions';
+import { ChatInterface } from '../redux/interfaces';
 
 const Container = styled.div`
   width: 100%;
@@ -65,15 +66,7 @@ const Input = styled.input`
   }
 `;
 
-interface Chat {
-  name: string;
-  show: boolean;
-  dispatchToggle: any;
-  dispatchSendMessage: any;
-  messages: [];
-}
-
-const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Chat) => {
+const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: ChatInterface) => {
   const [input, changeInputValue] = useState("");
   const [localMessages, changeMessages] = useState([]);
 
@@ -115,8 +108,8 @@ const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Cha
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatchToggle: (params) => dispatch(toggle(params)),
-  dispatchSendMessage: (params) => dispatch(sendMessage(params)),
+  dispatchToggle: (params: {}) => dispatch(toggle(params)),
+  dispatchSendMessage: (params: {}) => dispatch(sendMessage(params)),
 });
 
 export default connect(
