@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Online from '../components/OnlineList';
 import Windows from '../components/Windows';
+import { replaceArrayItem } from '../redux/helpers';
+import configureStore from '../redux/rootStore';
+import { Provider } from 'react-redux';
 
 const Container = styled.div`
   width: 100%;
@@ -22,7 +25,7 @@ const MyGlobalStyle = createGlobalStyle`
   }
 `;
 
-const replaceArrayItem = (array, index, item) => Object.assign([], array, { [index]: item });
+const store = configureStore();
 
 const list = [{ name: 'Adrian', show: false }, { name: 'Adam', show: false }, { name: 'Darek', show: false }];
 
@@ -38,14 +41,16 @@ const Home = () => {
   }
 
   return (
-  <main>
-    <MyGlobalStyle />
-    <Container>
-      <h1>Chat React + Redux + Typescript App</h1>
-        <Online list={chats} toggleChat={toggleChat} />
-    </Container>
-    <Windows chats={chats} toggleChat={toggleChat} />
-  </main>
+    <Provider store={store}>
+      <main>
+        <MyGlobalStyle />
+        <Container>
+          <h1>Chat React + Redux + Typescript App</h1>
+            <Online list={chats} toggleChat={toggleChat} />
+        </Container>
+        <Windows chats={chats} toggleChat={toggleChat} />
+      </main>
+    </Provider>
 )}
 
 export default Home

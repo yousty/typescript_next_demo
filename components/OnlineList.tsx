@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon as FAIcon } from "@fortawesome/react-fontawesome";
 import uuid4 from 'uuid'
+import { connect } from 'react-redux';
+import { initChat } from '../redux/rootActions';
 
 const Container = styled.ul`
   display: grid;
@@ -37,11 +39,16 @@ const Person = styled.li`
   }
 `;
 
-const Online = ({ list, toggleChat }: { list: any, toggleChat(index: any): void}) => {
+const Online = ({ list, toggleChat, dispatchInitChat }: { list: any, toggleChat(index: any): void, dispatchInitChat: any}) => {
+  const clickHandler = (person: any, index: number) => {
+    dispatchInitChat(person);
+    toggleChat(index);
+  };
+
   return (
     <Container>
       {list.map((person: any, index) => (
-        <Person key={uuid4()} onClick={() => {toggleChat(index)}}>
+        <Person key={uuid4()} onClick={() => clickHandler(person, index)}>
           <FAIcon icon={faUserTie} />
           {person.name}
         </Person>
@@ -50,4 +57,11 @@ const Online = ({ list, toggleChat }: { list: any, toggleChat(index: any): void}
   );
 };
 
-export default Online;
+const mapDispatchToProps = dispatch => ({
+  dispatchInitChat: (params) => dispatch(initChat(params)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Online);

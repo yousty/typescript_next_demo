@@ -6,7 +6,7 @@ import uuid4 from 'uuid'
 
 const Container = styled.div`
   width: 100%;
-  max-width: 250px;
+  max-width: 300px;
   margin: 0 1rem;
   background-color: white;
 `;
@@ -23,7 +23,8 @@ const Messages = styled.ol`
   flex-direction: column-reverse;
 
   li {
-    padding: 0 0.25rem;
+    padding: 0.5rem 0.25rem;
+    font-size: 1rem;
 
     &:nth-child(even) {
       background-color: #00ffff2e;
@@ -48,8 +49,9 @@ const Bar = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: 0.4rem 0.25rem;
+  padding: 0.5rem 0.25rem;
   box-sizing: border-box;
+  font-size: 1rem;
 
   &:focus {
     outline: none;
