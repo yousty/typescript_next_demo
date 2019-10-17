@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
+import uuid4 from 'uuid'
 
 const Container = styled.div`
   width: 100%;
@@ -49,14 +50,19 @@ const Input = styled.input`
   width: 100%;
   padding: 0.4rem 0.25rem;
   box-sizing: border-box;
-  border: 1px solid gray;
 
   &:focus {
     outline: none;
   }
 `;
 
-const Chat = ({ name, show, toggleChat }) => {
+interface Chat {
+  name: string;
+  show: boolean;
+  toggleChat(index: any): void;
+}
+
+const Chat = ({ name, show, toggleChat }: Chat) => {
   if (!show) return null;
 
   const [input, changeInputValue] = useState("");
@@ -76,7 +82,7 @@ const Chat = ({ name, show, toggleChat }) => {
       </Bar>
       <Messages>
         {messages.map(el => (
-          <li>{el}</li>
+          <li key={uuid4()}>{el}</li>
         ))}
       </Messages>
       <form onSubmit={(e) => submitHandler(e)}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import Chat from './Chat';
+import uuid4 from 'uuid'
 
 const Container = styled.div`
   position: absolute;
@@ -15,7 +16,7 @@ const Container = styled.div`
 const Windows = ({ chats, toggleChat }) => {
   return (
     <Container>
-      {chats.map((el, index) => <Chat {...el} toggleChat={() => toggleChat(index)} />)}
+      {chats.map((el, index) => <Chat key={uuid4()} {...el} toggleChat={() => {toggleChat(index)}} />)}
     </Container>
   )
 }

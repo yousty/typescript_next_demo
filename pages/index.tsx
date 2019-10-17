@@ -27,14 +27,14 @@ const replaceArrayItem = (array, index, item) => Object.assign([], array, { [ind
 const list = [{ name: 'Adrian', show: false }, { name: 'Adam', show: false }, { name: 'Darek', show: false }];
 
 const Home = () => {
-  const [isChatShowing, showChat] = useState(false);
   const [chats, changeChats] = useState([...list]);
 
-  const toggleChat = (index) => {
+  const toggleChat = (index: number) => {
     const targetChat = [...chats][index];
     const newChats = replaceArrayItem([...chats], index, {...targetChat, show: !targetChat.show});
 
     changeChats(newChats);
+    return newChats;
   }
 
   return (
