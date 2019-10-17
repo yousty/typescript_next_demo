@@ -5,6 +5,11 @@ export const INITIAL_STATE = {
   chats: [],
 };
 
+interface Chat {
+  name: string;
+  message: string;
+}
+
 const chatState = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case chatActions.initChat: {
@@ -23,7 +28,10 @@ const chatState = (state = INITIAL_STATE, action) => {
       };
     }
     case chatActions.sendMessage: {
-      const { name, message } = action.payload;
+      const {
+        name,
+        message,
+      }: Chat = action.payload;
       const foundChatIndex = state.chats.findIndex(chat => chat.name === name);
       const newChat = {
         ...state.chats[foundChatIndex],
@@ -40,7 +48,7 @@ const chatState = (state = INITIAL_STATE, action) => {
       };
     }
     case chatActions.toggle: {
-      const { name } = action.payload;
+      const { name }: Chat = action.payload;
       const foundChatIndex = state.chats.findIndex(chat => chat.name === name);
       const newChat = { ...state.chats[foundChatIndex], show: !state.chats[foundChatIndex].show };
 
