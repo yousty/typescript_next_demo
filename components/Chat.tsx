@@ -81,6 +81,10 @@ const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Cha
     changeMessages(messages);
   }, [messages]);
 
+  const handleInputChange = (val: string) => {
+    changeInputValue(val);
+  }
+
   if (!show) return null;
 
   const submitHandler = (e) => {
@@ -104,7 +108,7 @@ const Chat = ({ name, show, messages, dispatchToggle, dispatchSendMessage }: Cha
         </Messages>
       </Window>
       <form onSubmit={(e) => submitHandler(e)}>
-        <Input type="text" value={input} onChange={e => changeInputValue(e.target.value)} />
+        <Input type="text" value={input} onChange={e => handleInputChange(e.target.value)} />
       </form>
     </Container>
   );
