@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components';
-import Chat from './Chat';
-import uuid4 from 'uuid'
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import uuid4 from "uuid";
+import { connect } from "react-redux";
+import Chat from "./Chat";
 
 const Container = styled.div`
   position: absolute;
@@ -22,15 +22,15 @@ const Windows = ({ chats }: { chats: [] }) => {
 
   return (
     <Container>
-      {localChats.map(el => <Chat key={uuid4()} {...el} />)}
+      {localChats.map(el => (
+        <Chat key={uuid4()} {...el} />
+      ))}
     </Container>
-  )
-}
+  );
+};
 
 const mapStateToProps = state => ({
-  chats: state.chatState.chats,
+  chats: state.chatState.chats
 });
 
-export default connect(
-  mapStateToProps,
-)(Windows);
+export default connect(mapStateToProps)(Windows);

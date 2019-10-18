@@ -25,7 +25,8 @@
     "target": "es5"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ],
   "include": [
     "next-env.d.ts",

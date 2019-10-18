@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import { faUserTie } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon as FAIcon } from "@fortawesome/react-fontawesome";
-import uuid4 from 'uuid'
+import React from 'react';
+import styled from 'styled-components';
+import { faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
+import uuid4 from 'uuid';
 import { connect } from 'react-redux';
 import { initChat, toggle } from '../redux/rootActions';
 
@@ -39,17 +39,25 @@ const Person = styled.li`
   }
 `;
 
+interface Person {
+  name: string;
+}
+interface Online {
+  dispatchToggle: ({ person }: { person: Person }) => void;
+  dispatchInitChat: ({ person }: { person: Person }) => void;
+}
+
 const list = [{ name: 'Adrian', show: false, init: false }, { name: 'Adam', show: false, init: false }, { name: 'Darek', show: false, init: false }];
 
-const Online = ({ dispatchInitChat, dispatchToggle }: { dispatchInitChat: any, dispatchToggle: any }) => {
-  const clickHandler = (person: any) => {
-    dispatchInitChat(person);
-    dispatchToggle(person);
+const Online = ({ dispatchInitChat, dispatchToggle }: Online) => {
+  const clickHandler = (person: Person): void => {
+    dispatchInitChat({ person });
+    dispatchToggle({ person });
   };
 
   return (
     <Container>
-      {list.map((person: any) => (
+      {list.map((person: Person) => (
         <Person key={uuid4()} onClick={() => clickHandler(person)}>
           <FAIcon icon={faUserTie} />
           {person.name}
@@ -60,8 +68,8 @@ const Online = ({ dispatchInitChat, dispatchToggle }: { dispatchInitChat: any, d
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatchToggle: (params) => dispatch(toggle(params)),
-  dispatchInitChat: (params) => dispatch(initChat(params)),
+  dispatchToggle: params => dispatch(toggle(params)),
+  dispatchInitChat: params => dispatch(initChat(params)),
 });
 
 export default connect(

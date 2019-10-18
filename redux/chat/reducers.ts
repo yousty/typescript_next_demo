@@ -2,7 +2,11 @@ import { chatActions } from '../rootTypes';
 import { replaceArrayItem } from '../helpers';
 import { ChatInterface } from '../interfaces';
 
-export const INITIAL_STATE = {
+interface State {
+  readonly chats: ReadonlyArray<ChatInterface>;
+}
+
+export const INITIAL_STATE: State = {
   chats: [],
 };
 

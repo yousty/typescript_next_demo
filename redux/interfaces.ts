@@ -3,6 +3,6 @@ export interface ChatInterface {
   show: boolean;
   messages: string[];
   message: string;
-  dispatchToggle: () => void;
-  dispatchSendMessage: () => void;
+  dispatchToggle: ({ name }: { name: string }) => void;
+  dispatchSendMessage: ({ name, message }: { name: string; message: string }) => void;
 }
