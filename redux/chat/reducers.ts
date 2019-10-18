@@ -1,19 +1,16 @@
+import { ChatInterface, State, Action } from '../interfaces';
 import { chatActions } from '../rootTypes';
 import { replaceArrayItem } from '../helpers';
-import { ChatInterface } from '../interfaces';
 
-interface State {
-  readonly chats: ReadonlyArray<ChatInterface>;
-}
-
-export const INITIAL_STATE: State = {
+const INITIAL_STATE: State = {
   chats: [],
 };
 
-const chatState = (state = INITIAL_STATE, action) => {
+const chatState = (state = INITIAL_STATE, action: Action): State => {
   switch (action.type) {
     case chatActions.initChat: {
-      const init = [...state.chats].find(el => el.name === action.payload.name) === undefined;
+      const { name }: ChatInterface = action.payload;
+      const init = [...state.chats].find(el => el.name === name) === undefined;
       const newChats = init ? (
         [...state.chats, {
           ...action.payload, init: true, messages: [],

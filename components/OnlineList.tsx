@@ -4,7 +4,9 @@ import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';
 import uuid4 from 'uuid';
 import { connect } from 'react-redux';
+import Redux, { Action } from 'redux';
 import { initChat, toggle } from '../redux/rootActions';
+import { Person } from '../redux/interfaces';
 
 const Container = styled.ul`
   display: grid;
@@ -18,7 +20,7 @@ const Container = styled.ul`
   margin: 10vh auto;
 `;
 
-const Person = styled.li`
+const PersonList = styled.li`
   min-height: 150px;
   border-radius: 6px;
   padding: 0.5rem;
@@ -38,38 +40,34 @@ const Person = styled.li`
     font-size: 4rem;
   }
 `;
-
-interface Person {
-  name: string;
-}
 interface Online {
-  dispatchToggle: ({ person }: { person: Person }) => void;
-  dispatchInitChat: ({ person }: { person: Person }) => void;
+  dispatchToggle(params: Person): Action;
+  dispatchInitChat(params: Person): Action;
 }
 
-const list = [{ name: 'Adrian', show: false, init: false }, { name: 'Adam', show: false, init: false }, { name: 'Darek', show: false, init: false }];
+const list: Person[] = [{ name: 'Adrian', show: false, init: false }, { name: 'Adam', show: false, init: false }, { name: 'Darek', show: false, init: false }];
 
-const Online = ({ dispatchInitChat, dispatchToggle }: Online) => {
+const Online: React.FunctionComponent<Online> = ({ dispatchInitChat, dispatchToggle }: Online) => {
   const clickHandler = (person: Person): void => {
-    dispatchInitChat({ person });
-    dispatchToggle({ person });
+    dispatchInitChat(person);
+    dispatchToggle(person);
   };
 
   return (
     <Container>
       {list.map((person: Person) => (
-        <Person key={uuid4()} onClick={() => clickHandler(person)}>
+        <PersonList key={uuid4()} onClick={() => clickHandler(person)}>
           <FAIcon icon={faUserTie} />
           {person.name}
-        </Person>
+        </PersonList>
       ))}
     </Container>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  dispatchToggle: params => dispatch(toggle(params)),
-  dispatchInitChat: params => dispatch(initChat(params)),
+const mapDispatchToProps = (dispatch: Redux.Dispatch): Online => ({
+  dispatchToggle: (params: Person): Action => dispatch(toggle(params)),
+  dispatchInitChat: (params: Person): Action => dispatch(initChat(params)),
 });
 
 export default connect(
